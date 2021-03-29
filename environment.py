@@ -16,6 +16,12 @@ class Environment:
         self.target_init_state = None
         self.target_speed = target_speed
         self._create_environment_space()
+        # Variables for saving coordinates and plotting later
+        self.robot_pos = []
+        self.target_pos = []
+        self.distances = []
+        # Flag for when simulation is done
+        self.sim_is_done = False
 
     # Creating environment space
     def _create_environment_space(self):
@@ -43,9 +49,13 @@ class Environment:
         t_mov_speed_x = self.target_speed
         target_next_state = np.array([target_state[0] + t_mov_speed_x, self.target_init_state[1] + 40 * np.sin((target_state[0] * np.pi)/60)], dtype=np.float32)
         # Computing distance to target (not seen by robot, just for debugging)
-        distance_to_target = np.linalg.norm(next_state - target_state)
+        distance_to_target = np.linalg.norm(next_state - target_next_state)
 
-        return next_state, target_next_state, distance_to_target
+        # Flag for when simulation is done
+        if target_next_state[0] < 0.0 or target_next_state[0] > 330.0 or target_next_state[1] < 0.0 or target_next_state[1] > 160.0:
+            self.sim_is_done = True
+
+        return next_state, target_next_state, distance_to_target, self.sim_is_done
 
     def show(self, robot_state, target_state):
         # Create background
@@ -64,6 +74,19 @@ class Environment:
         target_radius = int(3 * self.magnification)
         target_colour = (0, 0, 200)
         cv2.circle(self.image, target_centre, target_radius, target_colour, cv2.FILLED)
+
+        # Save position of robot and target for plotting later
+        self.robot_pos.append(robot_centre)
+        self.target_pos.append(target_centre)
+
+        # Drawing trajectories of robot and target
+        # Robot trajectory
+        for i in range(1,len(self.robot_pos)-1,5):
+            cv2.line(self.image, self.robot_pos[i], self.robot_pos[i+1], robot_colour, 2)
+
+        # Target trajectory
+        for i in range(1,len(self.target_pos)-1,5):
+            cv2.line(self.image, self.target_pos[i], self.target_pos[i+1], target_colour, 2)
 
         # Show image
         cv2.imshow("Environment", self.image)
