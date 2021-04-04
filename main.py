@@ -18,7 +18,7 @@ action = np.array([0.1,0.1])
 sim_done = False
 
 while not sim_done:
-    robot_state, target_state, dist, sim_done = environment.step(robot_state, action, target_state)
+    robot_state, target_state, target_action, dist, sim_done = environment.step(robot_state, action, target_state)
     environment.show(robot_state, target_state)
 
 cv2.waitKey(0)
