@@ -50,7 +50,7 @@ class Environment:
         
         target_next_state = np.array([target_state[0] + target_action[0], self.target_init_state[1] + target_action[1]], dtype=np.float32)
         # Vector between robot and target
-        robot_target_diff = next_state - target_next_state
+        robot_target_diff = target_next_state - next_state
 
         # Flag for when simulation is done
         if target_next_state[0] < 0.0 or target_next_state[0] > 330.0 or target_next_state[1] < 0.0 or target_next_state[1] > 160.0:
