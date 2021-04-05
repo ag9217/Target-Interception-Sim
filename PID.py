@@ -16,6 +16,7 @@ def PID_control(robot_action, robot_target_diff):
     # Computing angle between unit vectors based on dot product (in degrees)
     error_angle = np.arccos(dot_product)
 
+    # Condition when robot should turn left
     if robot_action_unit[0] < robot_target_diff_unit[0] or robot_action_unit[1] > robot_target_diff_unit[1]:
         error_angle = -error_angle
 
