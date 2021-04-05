@@ -1,12 +1,15 @@
 import time
 import numpy as np
 import cv2
-from PID import PID_control
+from PID import PID
 
 from environment import Environment
 
 # Create an environment
 environment = Environment(magnification=3, target_speed=0.2)
+
+# Creating PID controller
+pid = PID(1, 0.0, 0.02)
 
 # Saving initial states of robot and target
 robot_state = environment.init_state
@@ -23,6 +26,6 @@ while not sim_done:
     environment.show(robot_state, target_state)
 
     # Calculating robot action based off PID
-    action = PID_control(action, diff_vector)
+    action = pid.PID_control(action, diff_vector)
 
 cv2.waitKey(0)
