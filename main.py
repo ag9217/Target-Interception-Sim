@@ -9,7 +9,7 @@ from environment import Environment
 environment = Environment(magnification=3, target_speed=0.2)
 
 # Creating PID controller
-pid = PID(1, 0.0, 0.02)
+pid = PID(1.0, 0.0, 0.01)
 
 # Saving initial states of robot and target
 robot_state = environment.init_state
