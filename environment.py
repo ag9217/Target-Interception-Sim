@@ -49,14 +49,14 @@ class Environment:
         target_action = np.array([self.target_speed, 40 * np.sin((target_state[0] * np.pi)/60)])
         
         target_next_state = np.array([target_state[0] + target_action[0], self.target_init_state[1] + target_action[1]], dtype=np.float32)
-        # Computing distance to target (not seen by robot, just for debugging)
-        distance_to_target = np.linalg.norm(next_state - target_next_state)
+        # Vector between robot and target
+        robot_target_diff = next_state - target_next_state
 
         # Flag for when simulation is done
         if target_next_state[0] < 0.0 or target_next_state[0] > 330.0 or target_next_state[1] < 0.0 or target_next_state[1] > 160.0:
             self.sim_is_done = True
 
-        return next_state, target_next_state, target_action, distance_to_target, self.sim_is_done
+        return next_state, target_next_state, target_action, robot_target_diff, self.sim_is_done
 
     def show(self, robot_state, target_state):
         # Create background
