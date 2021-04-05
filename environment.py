@@ -83,12 +83,12 @@ class Environment:
 
         # Drawing trajectories of robot and target
         # Robot trajectory
-        for i in range(1,len(self.robot_pos)-1,5):
-            cv2.line(self.image, self.robot_pos[i], self.robot_pos[i+1], robot_colour, 2)
+        for i in range(1,len(self.robot_pos)-1,20):
+            cv2.circle(self.image, self.robot_pos[i], 1, robot_colour, 2)
 
         # Target trajectory
-        for i in range(1,len(self.target_pos)-1,5):
-            cv2.line(self.image, self.target_pos[i], self.target_pos[i+1], target_colour, 2)
+        for i in range(1,len(self.target_pos)-1,20):
+            cv2.circle(self.image, self.target_pos[i], 1, target_colour, 2)
 
         # Show image
         cv2.imshow("Environment", self.image)
