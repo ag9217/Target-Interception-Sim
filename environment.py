@@ -65,17 +65,17 @@ class Environment:
         window_bottom_right = (self.magnification * int(self.width), self.magnification * int(self.height))
         cv2.rectangle(self.image, window_top_left, window_bottom_right, (255, 255, 255), thickness=cv2.FILLED)
 
-        # Drawing robot / pursuer
-        robot_centre = (int(robot_state[0] * self.magnification), int((int(self.height) - robot_state[1]) * self.magnification))
-        robot_radius = int(3 * self.magnification)
-        robot_colour = (230, 20, 70)
-        cv2.circle(self.image, robot_centre, robot_radius, robot_colour, cv2.FILLED)
-
         # Draw target
         target_centre = (int(target_state[0] * self.magnification), int((int(self.height) - target_state[1]) * self.magnification))
         target_radius = int(3 * self.magnification)
         target_colour = (0, 0, 200)
         cv2.circle(self.image, target_centre, target_radius, target_colour, cv2.FILLED)
+
+        # Drawing robot / pursuer
+        robot_centre = (int(robot_state[0] * self.magnification), int((int(self.height) - robot_state[1]) * self.magnification))
+        robot_radius = int(3 * self.magnification)
+        robot_colour = (230, 20, 70)
+        cv2.circle(self.image, robot_centre, robot_radius, robot_colour, cv2.FILLED)
 
         # Save position of robot and target for plotting later
         self.robot_pos.append(robot_centre)
