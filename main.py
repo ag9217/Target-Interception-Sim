@@ -23,13 +23,12 @@ action = np.array([0.3,0.3])
 # Variable when simulation is finished
 sim_done = False
 
-# One step of simulation to save diff_vector for PN controller
-#obot_state, target_state, target_action, diff_vector, sim_done = environment.step(robot_state, action, target_state)
-#pn.robot_target_diff_old = diff_vector
-
 while not sim_done:
     robot_state, target_state, target_action, diff_vector, sim_done = environment.step(robot_state, action, target_state)
     environment.show(robot_state, target_state)
+
+    if np.linalg.norm(robot_state - target_state) < 0.1:
+        sim_done = True
 
     # Calculating robot action based off PID
     #action = pid.PID_control(action, diff_vector)
