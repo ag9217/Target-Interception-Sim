@@ -22,7 +22,6 @@ class PN:
         a = robot_target_diff_unit
         b = robot_target_diff_old_unit
         # Computing angle between unit vectors based on dot product (in degrees)
-        #error_angle = np.arctan2(a[1],a[0]) - np.arctan2(b[1],b[0])
         error_angle = -np.arctan2(a[0]*b[1] - a[1]*b[0], a[0]*b[0]+a[1]*b[1])
 
         print(error_angle)
