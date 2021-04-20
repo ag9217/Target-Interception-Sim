@@ -1,5 +1,6 @@
-# Byte-compiled / optimized / DLL files
+# Byte-compiled / optimized / DLL files / report
 __pycache__/
+report/
 *.py[cod]
 *$py.class
 
