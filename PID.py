@@ -23,7 +23,7 @@ class PID:
         dot_product = np.dot(robot_action_unit, robot_target_diff_unit)
         # Computing angle between unit vectors based on dot product
         error_angle = np.arccos(dot_product)
-        print(np.rad2deg(error_angle))
+        err = np.rad2deg(error_angle)
 
         # Saving error for integral term
         self.error_sum += error_angle
@@ -45,4 +45,4 @@ class PID:
 
         self.prev_angle = error_angle
 
-        return robot_new_action
+        return robot_new_action, err
