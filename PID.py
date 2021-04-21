@@ -13,7 +13,7 @@ class PID:
         self.prev_angle = 0
         self.error_sum = 0
 
-    def PID_control(self, robot_action, robot_target_diff):
+    def PID_control(self, robot_action, robot_target_diff, const_err=0):
 
         # Creating unit vectors
         robot_action_unit = robot_action / np.linalg.norm(robot_action)
