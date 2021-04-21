@@ -7,11 +7,13 @@ from PN import PN
 
 from environment import Environment
 
-# Create an environment
-environment = Environment(magnification=3, target_speed=0.2)
+# Initial variables
+delay = 0 # How many discrete time steps of delay
+sim_done = False # Variable when simulation is finished
+count = 0 # Counter during simulation
 
-# Delay variable
-delay = 5
+# Create an environment
+environment = Environment(magnification=3, target_speed=0.2, traj=0)
 
 # Creating controllers
 pid = PID(0.7, 0.0, 0.60)
@@ -32,12 +34,6 @@ for i in range(1,delay):
 # Appending initial action
 actions.append(action)
 
-# Variable when simulation is finished
-sim_done = False
-
-# Counter during simulation
-count = 0
-
 while not sim_done:
     robot_state, target_state, target_action, diff_vector, sim_done = environment.step(robot_state, actions[count], target_state)
     environment.show(robot_state, target_state)
@@ -46,11 +42,12 @@ while not sim_done:
         sim_done = True
 
     # Calculating robot action based off PID
-    action = pid.PID_control(action, diff_vector)
+    action = pid.PID_control(action, diff_vector, np.deg2rad(0))
 
     # Calculating robot action based off PN
     #action = pn.PN_control(action, diff_vector)
 
+    # Appending new action to list
     actions.append(action)
 
     count += 1
