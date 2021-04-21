@@ -23,9 +23,6 @@ class PN:
         b = robot_target_diff_old_unit
         # Computing angle between unit vectors based on dot product (in degrees)
         error_angle = -np.arctan2(a[0]*b[1] - a[1]*b[0], a[0]*b[0]+a[1]*b[1])
-
-        print(error_angle)
-
         error_angle = self.N * error_angle
 
         # Creating rotation matrix to rotate robot action
@@ -36,4 +33,11 @@ class PN:
 
         self.robot_target_diff_old = robot_target_diff
 
-        return robot_new_action
+        # Information for plotting later
+        robot_action_unit = robot_action / np.linalg.norm(robot_action)
+        # Computing dot product
+        dot_product = np.dot(robot_action_unit, robot_target_diff_unit)
+        # Computing angle between unit vectors based on dot product
+        err = np.rad2deg(np.arccos(dot_product))
+
+        return robot_new_action, err
