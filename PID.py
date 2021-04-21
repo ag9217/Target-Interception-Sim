@@ -19,20 +19,15 @@ class PID:
         robot_action_unit = robot_action / np.linalg.norm(robot_action)
         robot_target_diff_unit = robot_target_diff / np.linalg.norm(robot_target_diff)
 
-        # Computing dot product
-        dot_product = np.dot(robot_action_unit, robot_target_diff_unit)
+        # Creating variables with smaller names
+        a = robot_action_unit
+        b = robot_target_diff_unit
+
         # Computing angle between unit vectors based on dot product
-        error_angle = np.arccos(dot_product)
-        err = np.rad2deg(error_angle)
+        error_angle = np.arctan2(a[0]*b[1] - a[1]*b[0], a[0]*b[0]+a[1]*b[1]) - const_err
 
         # Saving error for integral term
         self.error_sum += error_angle
-
-        # Condition when robot should turn left
-        if robot_action_unit[0] < robot_target_diff_unit[0] or robot_action_unit[1] > robot_target_diff_unit[1]:
-            error_angle = -error_angle
-
-        error_angle =  error_angle - const_err
 
         # Calculating PID output
         PID_h = self.K_p * error_angle + self.K_i * self.error_sum + self.K_d * (error_angle - self.prev_angle)
@@ -44,5 +39,12 @@ class PID:
         robot_new_action = np.dot(rot,robot_action)
 
         self.prev_angle = error_angle
+
+        # Information for plotting later
+        robot_action_unit = robot_action / np.linalg.norm(robot_action)
+        # Computing dot product
+        dot_product = np.dot(robot_action_unit, robot_target_diff_unit)
+        # Computing angle between unit vectors based on dot product
+        err = np.rad2deg(np.arccos(dot_product))
 
         return robot_new_action, err
