@@ -3,7 +3,7 @@ import cv2
 
 class Environment:
     # Initialising environment object
-    def __init__(self, magnification, target_speed):
+    def __init__(self, magnification, target_speed, traj):
         # Set magnification factor of the display
         self.magnification = magnification
         # Set width and height of environment
@@ -20,6 +20,8 @@ class Environment:
         self.robot_pos = []
         self.target_pos = []
         self.distances = []
+        # Trajectory target will follow
+        self.trajectory = traj
         # Flag for when simulation is done
         self.sim_is_done = False
 
@@ -46,8 +48,10 @@ class Environment:
             next_state = state
 
         # Calculating new position of target (following sine wave)
-        target_action = np.array([self.target_speed, 40 * np.sin((target_state[0] * np.pi)/60)])
-        #target_action = np.array([self.target_speed, 0]) # Target goes straight
+        if self.trajectory == 1: #Sine wave
+            target_action = np.array([self.target_speed, 40 * np.sin((target_state[0] * np.pi)/60)])
+        else: # Anything else, straight line
+            target_action = np.array([self.target_speed, 0]) # Target goes straight
         
         target_next_state = np.array([target_state[0] + target_action[0], self.target_init_state[1] + target_action[1]], dtype=np.float32)
         # Vector between robot and target
@@ -83,11 +87,11 @@ class Environment:
 
         # Drawing trajectories of robot and target
         # Robot trajectory
-        for i in range(1,len(self.robot_pos)-1,20):
+        for i in range(1,len(self.robot_pos)-1,15):
             cv2.circle(self.image, self.robot_pos[i], 1, robot_colour, 2)
 
         # Target trajectory
-        for i in range(1,len(self.target_pos)-1,20):
+        for i in range(1,len(self.target_pos)-1,15):
             cv2.circle(self.image, self.target_pos[i], 1, target_colour, 2)
 
         # Show image
