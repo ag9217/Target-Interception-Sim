@@ -52,8 +52,6 @@ class Environment:
             target_action = np.array([self.target_speed, 40 * np.sin((target_state[0] * np.pi)/30)])
         else: # Anything else, straight line
             target_action = np.array([self.target_speed, 0]) # Target goes straight
-
-        print(np.linalg.norm(target_action))
         
         target_next_state = np.array([target_state[0] + target_action[0], self.target_init_state[1] + target_action[1]], dtype=np.float32)
         # Vector between robot and target
