@@ -41,10 +41,10 @@ class PID:
             error_angle = np.arctan2(a[0]*b[1] - a[1]*b[0], a[0]*b[0]+a[1]*b[1]) - const_err
 
             # Saving error for integral term
-            self.error_sum += error_angle
+            self.error_sum += error_angle * delta_time
 
             # Calculating PID output
-            PID_h = self.K_p * error_angle + self.K_i * self.error_sum + self.K_d * (error_angle - self.prev_angle)
+            PID_h = self.K_p * error_angle + self.K_i * self.error_sum + self.K_d * (error_angle - self.prev_angle) / delta_time
 
             # Creating rotation matrix to rotate robot action
             rot = np.array([[math.cos(PID_h), -math.sin(PID_h)], [math.sin(PID_h), math.cos(PID_h)]])
