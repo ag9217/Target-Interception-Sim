@@ -12,13 +12,13 @@ delay = 0 # How many discrete time steps of delay
 trajectory = 0 # 0 for straight line, 1 for sine wave
 draw = 1 # Illustration of pursuit shown
 controller = 'PID' # Choose which controller to use, 'PN' for proportional nav
-bearing_angle = 10 # Bearing angle for PID
+bearing_angle = 0 # Bearing angle for PID
 
 # Create an environment
 environment = Environment(magnification=3, target_speed=0.1549, traj=trajectory)
 
 # Creating controllers
-pid = PID(1.6, 0.0, 0, s_steps=10)
+pid = PID(1.2, 0.0, 0.5, s_steps=10)
 pn = PN(5, s_steps = 1)
 
 # Saving initial states of robot and target
