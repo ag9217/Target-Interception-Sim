@@ -5,19 +5,17 @@ import time
 
 class PN:
 
-    def __init__(self,gain,s_time):
+    def __init__(self,gain,s_steps):
         # Variable to keep previous diff vector
         self.robot_target_diff_old = np.array([-79.8, 119.75])
 
         # Gain
         self.N = gain
 
-        # Times
-        self.current_time = time.time()
-        self.prev_time = self.current_time
-        self.sample_time = s_time # How often to update PID
+        # How often to update PN controller
+        self.s_steps = s_steps + 1
 
-    def PN_control(self, robot_action, robot_target_diff):
+    def PN_control(self, robot_action, robot_target_diff, count):
 
         robot_new_action = robot_action # Will be changed once PN is called
         
@@ -25,11 +23,7 @@ class PN:
         robot_target_diff_unit = robot_target_diff / np.linalg.norm(robot_target_diff)
         robot_target_diff_old_unit = self.robot_target_diff_old / np.linalg.norm(self.robot_target_diff_old)
 
-        # Current time when doing PN
-        self.current_time = time.time()
-        delta_time = self.current_time - self.prev_time
-
-        if delta_time >= self.sample_time:
+        if count % self.s_steps == 0:
 
             # Computing dot product
             a = robot_target_diff_unit
@@ -45,8 +39,6 @@ class PN:
             robot_new_action = np.dot(rot,robot_action)
 
             self.robot_target_diff_old = robot_target_diff
-
-            self.prev_time = self.current_time
 
         # Information for plotting later
         robot_action_unit = robot_action / np.linalg.norm(robot_action)

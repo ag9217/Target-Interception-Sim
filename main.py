@@ -10,20 +10,23 @@ from environment import Environment
 # Initial variables
 delay = 0 # How many discrete time steps of delay
 trajectory = 0 # 0 for straight line, 1 for sine wave
+draw = 1 # Illustration of pursuit shown
+controller = 'PID' # Choose which controller to use, 'PN' for proportional nav
+bearing_angle = 10 # Bearing angle for PID
 
 # Create an environment
-environment = Environment(magnification=3, target_speed=0.20, traj=trajectory)
+environment = Environment(magnification=3, target_speed=0.1549, traj=trajectory)
 
 # Creating controllers
-pid = PID(0.4, 0.1, 0.7)
-pn = PN(10)
+pid = PID(1.6, 0.0, 0, s_steps=10)
+pn = PN(5, s_steps = 1)
 
 # Saving initial states of robot and target
 robot_state = environment.init_state
 target_state = environment.target_init_state
 
 # Initial robot action (will be determined by PID controller)
-action = np.array([0.3, 0])
+action = np.array([0.0, 0.2])
 
 # Action history (used to simulate delay in discrete steps)
 actions = list()
@@ -47,17 +50,20 @@ while not sim_done:
     # Stepping simulation
     robot_state, target_state, target_action, diff_vector, sim_done = environment.step(robot_state, actions[count], target_state)
     # Showing illustration of pursuit
-    environment.show(robot_state, target_state)
+    if draw:
+        environment.show(robot_state, target_state)
 
     # Capture criteria
-    if np.linalg.norm(robot_state - target_state) < 0.5:
+    if np.linalg.norm(robot_state - target_state) < 1.5:
         sim_done = True
 
     # Calculating robot action based off PID
-    action, err = pid.PID_control(action, diff_vector, np.deg2rad(35))
+    if controller == 'PID':
+        action, err = pid.PID_control(action, diff_vector, np.deg2rad(bearing_angle), count)
 
     # Calculating robot action based off PN
-    #action, err = pn.PN_control(action, diff_vector)
+    if controller == 'PN':
+        action, err = pn.PN_control(action, diff_vector, count)
 
     # Appending new action to list
     actions.append(action)
@@ -70,9 +76,22 @@ while not sim_done:
 
 cv2.waitKey(1)
 
+
 # Plotting results
+# Error angle vs Time
 plot1 = plt.figure(1)
-plt.plot(range(1,count), errors[:-1])
+plt.plot(range(1,count), errors[:-1], 'b')
+plt.ylabel('Error angle (°)')
+plt.xlabel('Time (steps) ')
+plt.grid(linestyle="--")
+
+# Distance vs Time
 plot1 = plt.figure(2)
-plt.plot(range(1,count), distances[:-1])
+plt.plot(range(1,count), distances[:-1], 'b')
+plt.ylim([0,180])
+plt.ylabel('Distance (cm)')
+plt.xlabel('Time (steps) ')
+plt.grid(linestyle="--")
+
+print("Steps to capture: ", count)
 plt.show()
