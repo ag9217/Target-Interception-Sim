@@ -17,13 +17,13 @@ draw = 0 # Illustration of pursuit shown
 # Saving counts
 counts = list()
 
-for bearing in np.arange(0, 55, 5):
+for bearing in np.arange(0, 60, 5):
     
     # Create an environment
-    environment = Environment(magnification=3, target_speed=0.095, traj=trajectory)
+    environment = Environment(magnification=3, target_speed=0.15, traj=trajectory)
 
     # Creating controllers
-    pid = PID(1.2, 0.0, 0.5, s_steps=10)
+    pid = PID(1.4, 0.0, 0.5, s_steps=10)
 
     # Saving initial states of robot and target
     robot_state = environment.init_state
@@ -86,5 +86,5 @@ plt.ylabel('Error angle (°)')
 plt.xlabel('Time (steps) ')
 plt.grid(linestyle="--")
 plt.legend()
-#plt.savefig('./constant_bearing.eps', bbox_inches='tight', pad_inches=0.01)
+plt.savefig('./constant_bearing.eps', bbox_inches='tight', pad_inches=0.01)
 plt.show()

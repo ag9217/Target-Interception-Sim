@@ -29,7 +29,7 @@ for P in np.arange(0.1, 1.6, 0.1):
         
         print(P_count, K_count)
         # Create an environment
-        environment = Environment(magnification=3, target_speed=0.095, traj=trajectory)
+        environment = Environment(magnification=3, target_speed=0.15, traj=trajectory)
 
         # Creating controllers
         pid = PID(P, 0.0, K, s_steps=10)
@@ -88,10 +88,10 @@ df_cm = pd.DataFrame(time_to_capture, [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0
                                         np.arange(0.5, 5.5, 0.5))
 sn.set(font_scale=1.0) # for label size
 #sn.heatmap(df_cm, annot=True, annot_kws={"size": 10}, cmap="Blues", fmt='g', vmin=9.44, vmax=9.65, cbar=False)
-sn.heatmap(df_cm, annot=True, annot_kws={"size": 10}, vmin=670, vmax=735, fmt='g', cbar=False)
+sn.heatmap(df_cm, annot=True, annot_kws={"size": 10}, vmin=942, vmax=1184, fmt='g', cbar=False)
 plt.xlabel(r'$K_{D}$')
 plt.ylabel(r'$K_{P}$', rotation=0)
 plt.yticks(rotation=0) 
 
-#plt.savefig('./nowhitespace.eps', bbox_inches='tight', pad_inches=0.01)
+#plt.savefig('./PIDtuning.eps', bbox_inches='tight', pad_inches=0.01)
 plt.show()
