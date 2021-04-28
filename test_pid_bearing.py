@@ -11,7 +11,7 @@ from environment import Environment
 
 # Initial variables
 delay = 0 # How many discrete time steps of delay
-trajectory = 0 # 0 for straight line, 1 for sine wave
+trajectory = 1 # 0 for straight line, 1 for sine wave
 draw = 0 # Illustration of pursuit shown
 
 # Saving counts
