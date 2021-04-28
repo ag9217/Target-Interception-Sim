@@ -9,17 +9,17 @@ from environment import Environment
 
 # Initial variables
 delay = 0 # How many discrete time steps of delay
-trajectory = 0 # 0 for straight line, 1 for sine wave
+trajectory = 1 # 0 for straight line, 1 for sine wave
 draw = 1 # Illustration of pursuit shown
-controller = 'PID' # Choose which controller to use, 'PN' for proportional nav
+controller = 'PN' # Choose which controller to use, 'PN' for proportional nav
 bearing_angle = 0 # Bearing angle for PID
 
 # Create an environment
-environment = Environment(magnification=3, target_speed=0.1549, traj=trajectory)
+environment = Environment(magnification=3, target_speed=0.14, traj=trajectory)
 
 # Creating controllers
-pid = PID(1.2, 0.0, 0.5, s_steps=10)
-pn = PN(5, s_steps = 1)
+pid = PID(1.4, 0.0, 0.5, s_steps=10)
+pn = PN(30, s_steps = 10)
 
 # Saving initial states of robot and target
 robot_state = environment.init_state
@@ -74,6 +74,7 @@ while not sim_done:
 
     count += 1
 
+print(count)
 cv2.waitKey(1)
 
 
