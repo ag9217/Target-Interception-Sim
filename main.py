@@ -11,11 +11,11 @@ from environment import Environment
 delay = 0 # How many discrete time steps of delay
 trajectory = 1 # 0 for straight line, 1 for sine wave
 draw = 1 # Illustration of pursuit shown
-controller = 'PN' # Choose which controller to use, 'PN' for proportional nav
+controller = 'PID' # Choose which controller to use, 'PN' for proportional nav
 bearing_angle = 0 # Bearing angle for PID
 
 # Create an environment
-environment = Environment(magnification=3, target_speed=0.14, traj=trajectory)
+environment = Environment(magnification=3, target_speed=0.1, traj=trajectory)
 
 # Creating controllers
 pid = PID(1.4, 0.0, 0.5, s_steps=10)
